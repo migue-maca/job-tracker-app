@@ -4,18 +4,26 @@ Memoria del proyecto entre sesiones. Máximo ~50 líneas: sintetizar o purgar in
 
 ## Estado Actual
 - Proyecto inicializado con Git, `.gitignore` y arnés agéntico (`SPEC.md`, `AGENTS.md`, `MEMORY.md`).
-- Pendiente: Crear la estructura de carpetas (`frontend/`, `backend/`), definir los `Dockerfile` y el `docker-compose.yml` inicial.
+- Andamiaje completo generado: `backend/` (FastAPI), `frontend/` (Next.js), `docker-compose.yml`, `.env`, `.env.example`.
+- Pendiente: ejecutar `docker compose up --build` y validar conectividad.
 
 ## Decisiones Técnicas (y Justificación)
 - Stack desacoplado (Next.js + FastAPI + PostgreSQL): Permite escalabilidad, tipado estricto en backend y persistencia relacional robusta.
 - Docker Compose: Aislamiento total de entornos sin obligar a instalar runtimes locales en el host.
 - CSS Nativo puro: Control exhaustivo de estilos y rendimiento sin dependencias de frameworks utilitarios.
 - Documento `SPEC.md` dedicado: Separa el alcance funcional de las directivas operativas de `AGENTS.md`.
+- `create_all()`` en lugar de Alembic: uso personal, sin necesidad de migraciones versionadas.
+- Credenciales en `.env` (git-ignored): docker-compose referencia variables, nunca hardcodea.
+- CORS restrictivo a `http://localhost:3000`: solo el frontend puede llamar a la API.
+- CSR con `useEffect`: renderizado en cliente, sin SSR.
+- Fechas: API en ISO `YYYY-MM-DD`, frontend formatea a `DD-MM-YYYY` sin conversiones UTC.
+- PostgreSQL sin puerto expuesto al host: solo red interna Docker.
 
 ## Aprendizajes y Errores a Evitar
-- (Registro inicial: evitar desfases de fechas locales por serialización automática a UTC).
+- Evitar desfases de fechas locales por serialización automática a UTC.
+- `tabla.css` debe importarse en `layout.tsx` (no en `page.tsx`).
 
 ## Próximos Pasos Inmediatos
-1. Diseñar el andamiaje de carpetas: `backend/` (FastAPI), `frontend/` (Next.js) y raíz con `docker-compose.yml`.
-2. Modelar la entidad `Postulacion` en el backend siguiendo la tabla de `SPEC.md`.
-3. Levantar los tres contenedores y validar la conectividad FastAPI <-> PostgreSQL, sin olvidar que todos los datos sensibles, como es el caso de usuario y contraseña de la BD, deben ir en un fichero `.env`.
+1. Ejecutar `docker compose up --build` y verificar que los tres servicios arrancan.
+2. Validar endpoint `/health` del backend y creación de una postulación de prueba.
+3. Verificar que el frontend carga y muestra la tabla correctamente.
