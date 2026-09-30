@@ -40,3 +40,6 @@ coverage/
 # Cache
 .cache/
 .eslintcache
+
+# Next.js
+frontend/.next/

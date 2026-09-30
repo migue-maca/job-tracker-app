@@ -1,1 +1,0 @@
-self.__REACT_LOADABLE_MANIFEST="{\"components/ui/TablaPostulaciones.tsx -> @/features/postulaciones/api\":{\"id\":\"components/ui/TablaPostulaciones.tsx -> @/features/postulaciones/api\",\"files\":[]}}"
