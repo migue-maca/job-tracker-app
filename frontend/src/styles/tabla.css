@@ -41,6 +41,11 @@
   background-color: #f3f4f6;
 }
 
+.tabla th:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: -2px;
+}
+
 .tabla tbody tr:hover {
   background-color: #f9fafb;
 }
@@ -127,6 +132,13 @@
   font-size: 0.9rem;
   background: white;
   cursor: pointer;
+  color: #333;
+}
+
+.filtros__select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 /* Botones pequeños */
@@ -150,6 +162,7 @@
   justify-content: center;
   z-index: 1000;
   padding: 20px;
+  overscroll-behavior: contain;
 }
 
 .modal {
@@ -164,6 +177,7 @@
 
 .modal h2 {
   margin-bottom: 16px;
+  text-wrap: balance;
 }
 
 /* Formulario */
@@ -184,6 +198,8 @@
   border-radius: 4px;
   font-size: 0.9rem;
   margin-top: 4px;
+  background-color: white;
+  color: #333;
 }
 
 .formulario input:focus,
@@ -219,6 +235,7 @@
   font-size: 1.2rem;
   margin-bottom: 16px;
   color: #1a1a1a;
+  text-wrap: balance;
 }
 
 .panel-estadisticas__grid {
@@ -241,6 +258,7 @@
   font-size: 1.8rem;
   font-weight: 700;
   color: #2563eb;
+  font-variant-numeric: tabular-nums;
 }
 
 .tarjeta__label {
@@ -268,4 +286,5 @@
   padding: 4px 0;
   font-size: 0.85rem;
   border-bottom: 1px solid #f3f4f6;
+  font-variant-numeric: tabular-nums;
 }
