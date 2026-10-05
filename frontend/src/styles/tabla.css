@@ -205,3 +205,67 @@
   gap: 12px;
   margin-top: 16px;
 }
+
+/* Panel de estadísticas */
+.panel-estadisticas {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.panel-estadisticas__titulo {
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+  color: #1a1a1a;
+}
+
+.panel-estadisticas__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.tarjeta {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 16px;
+  text-align: center;
+}
+
+.tarjeta__valor {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.tarjeta__label {
+  display: block;
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.panel-estadisticas__desglose {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.desglose h3 {
+  font-size: 0.9rem;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.desglose__fila {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 0.85rem;
+  border-bottom: 1px solid #f3f4f6;
+}

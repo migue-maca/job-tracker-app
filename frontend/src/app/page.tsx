@@ -5,11 +5,13 @@ import { TablaPostulaciones } from "@/components/ui/TablaPostulaciones";
 import { Filtros } from "@/components/ui/Filtros";
 import { Buscador } from "@/components/ui/Buscador";
 import { FormularioPostulacion } from "@/components/ui/FormularioPostulacion";
+import { PanelEstadisticas } from "@/components/ui/PanelEstadisticas";
 import { usePostulaciones } from "@/features/postulaciones/hooks";
 import { Postulacion, Orden } from "@/features/postulaciones/tipos";
 
 export default function Home() {
   const { postulaciones, cargando, error, recargar } = usePostulaciones();
+  const [statsTick, setStatsTick] = useState(0);
   const [busqueda, setBusqueda] = useState("");
   const [filtros, setFiltros] = useState({
     estado: "",
@@ -50,12 +52,14 @@ export default function Home() {
   const handleCreada = () => {
     setMostrarFormulario(false);
     recargar();
+    setStatsTick((t) => t + 1);
   };
 
   const handleEditada = () => {
     setPostulacionEditando(null);
     setMostrarFormulario(false);
     recargar();
+    setStatsTick((t) => t + 1);
   };
 
   return (
@@ -79,6 +83,8 @@ export default function Home() {
 
       {cargando && <p className="cargando">Cargando...</p>}
       {error && <p className="error">Error: {error}</p>}
+
+      <PanelEstadisticas recargar={statsTick} />
 
       <p className="info-filtro">
         {ordenadas.length} {ordenadas.length === 1 ? "postulación encontrada" : "postulaciones encontradas"}

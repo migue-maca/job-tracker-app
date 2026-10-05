@@ -11,7 +11,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import init_db
-from app.routers import postulacion
+from app.routers import postulacion, estadisticas
 
 
 @asynccontextmanager
@@ -44,6 +44,7 @@ app.add_middleware(
 
 # Registro de routers
 app.include_router(postulacion.router)
+app.include_router(estadisticas.router)
 
 
 @app.get("/health")

@@ -55,3 +55,21 @@ export async function eliminarPostulacion(id: string): Promise<void> {
   });
   if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
 }
+
+export interface Estadisticas {
+  total: number;
+  activas: number;
+  en_entrevista: number;
+  ofertas_recibidas: number;
+  por_canal: Record<string, number>;
+  por_modalidad: Record<string, number>;
+  por_prioridad: Record<string, number>;
+  tasa_conversion: number;
+  ultimos_30_dias: number;
+}
+
+export async function obtenerEstadisticas(): Promise<Estadisticas> {
+  const res = await fetch(`${API_URL}/api/estadisticas`);
+  if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
+  return res.json();
+}
