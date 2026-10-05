@@ -45,4 +45,8 @@ coverage/
 frontend/.next/
 
 # OpenCode:
-.opencode/
+.opencode/*
+
+# Keep the commands folder and its contents:
+!.opencode/commands/
+!.opencode/commands/**/
