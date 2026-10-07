@@ -31,3 +31,14 @@ Aplicación web profesional para registrar, filtrar y ordenar postulaciones de e
 - Siempre: Respetar el esquema de `SPEC.md`, usar CSS nativo y mantener la aplicación desplegable vía Docker.
 - Pregunta antes: Añadir nuevas dependencias externas a `package.json` o `requirements.txt`, o modificar esquemas de la base de datos.
 - Nunca: Instalar utilidades CSS alternativas (Tailwind, Bootstrap), romper la estructura de contenedores o eliminar datos persistidos sin confirmación.
+
+## Skills de UI y Frontend
+
+Cuando diseñes o modifiques interfaces web, estilos o componentes orientados al usuario, adiérete estrictamente a las guías definidas en:
+- `.agents/skills/web-design-guidelines/SKILL.md`
+- `.agents/skills/frontend-design/SKILL.md`
+
+## Implementación de nuevas features
+
+Cuando se vayan a crear funcionalidades nuevas, utiliza la siguiente skill para definirlas lo mejor posible antes de construir:
+- `.agents/skills/grill-me/SKILL.md`
