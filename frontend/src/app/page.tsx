@@ -6,6 +6,7 @@ import { Filtros } from "@/components/ui/Filtros";
 import { Buscador } from "@/components/ui/Buscador";
 import { FormularioPostulacion } from "@/components/ui/FormularioPostulacion";
 import { PanelEstadisticas } from "@/components/ui/PanelEstadisticas";
+import { DetallePostulacion } from "@/components/ui/DetallePostulacion";
 import { usePostulaciones } from "@/features/postulaciones/hooks";
 import { Postulacion, Orden } from "@/features/postulaciones/tipos";
 
@@ -22,6 +23,7 @@ export default function Home() {
   const [orden, setOrden] = useState<Orden>({ campo: "fecha_postulacion", direccion: "desc" });
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [postulacionEditando, setPostulacionEditando] = useState<Postulacion | null>(null);
+  const [postulacionDetalle, setPostulacionDetalle] = useState<Postulacion | null>(null);
 
   // Filtrado en cliente (los datos ya vienen del backend)
   const filtradas = postulaciones.filter((p) => {
@@ -94,6 +96,7 @@ export default function Home() {
         postulaciones={ordenadas}
         orden={orden}
         onOrdenar={setOrden}
+        onVerDetalle={setPostulacionDetalle}
         onEditar={(p) => {
           setPostulacionEditando(p);
           setMostrarFormulario(true);
@@ -108,6 +111,18 @@ export default function Home() {
           onCancelar={() => {
             setMostrarFormulario(false);
             setPostulacionEditando(null);
+          }}
+        />
+      )}
+
+      {postulacionDetalle && (
+        <DetallePostulacion
+          postulacion={postulacionDetalle}
+          onCerrar={() => setPostulacionDetalle(null)}
+          onEditar={(p) => {
+            setPostulacionDetalle(null);
+            setPostulacionEditando(p);
+            setMostrarFormulario(true);
           }}
         />
       )}

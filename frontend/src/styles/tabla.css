@@ -59,6 +59,47 @@
   background-color: #f8fafc;
 }
 
+.tabla__fila-clicable {
+  cursor: pointer;
+}
+
+/* Modal de detalle */
+.detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.detalle__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detalle__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-texto-secundario);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.detalle__valor {
+  font-size: 0.95rem;
+  color: var(--color-texto);
+}
+
+.detalle__enlace {
+  color: var(--color-info);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.detalle__enlace:hover {
+  text-decoration: underline;
+}
+
 .tabla tbody tr:last-child td {
   border-bottom: none;
 }

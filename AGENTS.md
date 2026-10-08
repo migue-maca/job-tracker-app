@@ -38,7 +38,7 @@ Cuando diseñes o modifiques interfaces web, estilos o componentes orientados al
 - `.agents/skills/web-design-guidelines/SKILL.md`
 - `.agents/skills/frontend-design/SKILL.md`
 
-## Implementación de nuevas features
+## Implementación de nuevas features y de modificaciones de otras ya existentes o de errores identificados
 
-Cuando se vayan a crear funcionalidades nuevas, utiliza la siguiente skill para definirlas lo mejor posible antes de construir:
+Cuando se vaya a abordar cualquier tarea que tenga cierta relevancia, utiliza la siguiente skill para definir lo mejor posible antes de construir:
 - `.agents/skills/grill-me/SKILL.md`

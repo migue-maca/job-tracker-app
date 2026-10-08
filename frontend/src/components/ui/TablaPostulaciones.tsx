@@ -7,19 +7,21 @@ interface TablaProps {
   postulaciones: Postulacion[];
   orden: Orden;
   onOrdenar: (orden: Orden) => void;
+  onVerDetalle: (p: Postulacion) => void;
   onEditar: (p: Postulacion) => void;
   onEliminar: () => void;
 }
 
 /**
  * Tabla interactiva de postulaciones.
- * Permite ordenar por columnas haciendo clic en los encabezados.
- * Incluye scroll horizontal para pantallas estrechas.
+ * Muestra solo la información más relevante para un primer vistazo.
+ * Al hacer clic en una fila se abre el detalle completo.
  */
 export function TablaPostulaciones({
   postulaciones,
   orden,
   onOrdenar,
+  onVerDetalle,
   onEditar,
   onEliminar,
 }: TablaProps) {
@@ -40,7 +42,7 @@ export function TablaPostulaciones({
   };
 
   if (postulaciones.length === 0) {
-    return <p className="tabla-vacia">No hay postulaciones registradas.</p>;
+    return <p className="tabla-vacia">No hay postulaciones registradadas.</p>;
   }
 
   return (
@@ -57,40 +59,26 @@ export function TablaPostulaciones({
             <th onClick={() => cambiarOrden("puesto")}>
               Puesto{indicador("puesto")}
             </th>
-            <th>Canal</th>
-            <th>Modalidad</th>
-            <th>Ubicación</th>
-            <th onClick={() => cambiarOrden("salario_min")}>
-              Salario{indicador("salario_min")}
-            </th>
             <th>Estado</th>
-            <th>Prioridad</th>
-            <th>Jornada</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
           {postulaciones.map((p) => (
-            <tr key={p.id}>
+            <tr
+              key={p.id}
+              onClick={() => onVerDetalle(p)}
+              className="tabla__fila-clicable"
+            >
               <td>{formatearFecha(p.fecha_postulacion)}</td>
               <td>{p.empresa}</td>
               <td>{p.puesto}</td>
-              <td>{p.canal_origen}</td>
-              <td>{p.modalidad}</td>
-              <td>{p.ubicacion}</td>
-              <td>
-                {p.salario_min || p.salario_max
-                  ? `${p.salario_min ?? "?"} - ${p.salario_max ?? "?"} €`
-                  : p.salario_texto || "-"}
-              </td>
               <td>
                 <span className={`badge badge--${p.estado.toLowerCase().replace(/ /g, "-")}`}>
                   {p.estado}
                 </span>
               </td>
-              <td>{p.prioridad}</td>
-              <td>{p.tipo_jornada}</td>
-              <td>
+              <td onClick={(e) => e.stopPropagation()}>
                 <button
                   className="btn btn-secundario btn--sm"
                   onClick={() => onEditar(p)}
