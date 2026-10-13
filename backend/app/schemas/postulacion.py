@@ -53,7 +53,6 @@ class PostulacionUpdate(BaseModel):
     salario_texto: str | None = Field(default=None, max_length=255)
     estado: Estado | None = None
     prioridad: Prioridad | None = None
-    tipo_jornada: TipoJornada | None = None
     enlace_oferta: str | None = Field(default=None, max_length=500)
     tecnologias: str | None = None
     notas_seguimiento: str | None = None
@@ -75,3 +74,29 @@ class PostulacionResponse(PostulacionBase):
         if isinstance(valor, UUID):
             return str(valor)
         return valor
+
+
+class PostulacionImportar(BaseModel):
+    """Esquema para importar postulaciones desde JSON.
+
+    Los campos de 'id' se omiten para que el ORM genere nuevos UUIDs.
+   tipo_jornada tiene valor por defecto 'Completa' para compatibilidad
+    con JSONs creados antes de la existencia de este campo.
+    """
+
+    fecha_postulacion: date
+    empresa: str = Field(min_length=1, max_length=255)
+    puesto: str = Field(min_length=1, max_length=255)
+    canal_origen: str = Field(min_length=1, max_length=100)
+    modalidad: Modalidad
+    ubicacion: str = Field(min_length=1, max_length=255)
+    salario_min: int | None = None
+    salario_max: int | None = None
+    salario_texto: str | None = Field(default=None, max_length=255)
+    estado: Estado
+    prioridad: Prioridad
+    tipo_jornada: TipoJornada = TipoJornada.COMPLETA
+    enlace_oferta: str | None = Field(default=None, max_length=500)
+    tecnologias: str | None = None
+    notas_seguimiento: str | None = None
+    info_entrevistas: str | None = None

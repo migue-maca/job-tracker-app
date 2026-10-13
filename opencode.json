@@ -1,0 +1,9 @@
+{
+  "model": "opencode/longcat-2.5-preview-free",
+  "mcp": {
+    "chrome-devtools": {
+      "type": "local",
+      "command": ["npx", "-y", "chrome-devtools-mcp@latest"]
+    }
+  }
+}

@@ -68,6 +68,35 @@ export interface Estadisticas {
   ultimos_30_dias: number;
 }
 
+export interface ResultadoImportar {
+  creadas: number;
+  duplicadas: number;
+  errores: number;
+}
+
+export async function exportarJSON(): Promise<Blob> {
+  const res = await fetch(`${API_URL}/api/postulaciones/exportar`, {
+    method: "GET",
+    headers: { "Accept": "application/json" },
+  });
+  if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
+  return res.blob();
+}
+
+export async function importarJSON(archivo: File, modo: "añadir" | "reemplazar" = "añadir"): Promise<ResultadoImportar> {
+  const contenido = await archivo.text();
+  const res = await fetch(`${API_URL}/api/postulaciones/importar?modo=${modo}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: contenido,
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    throw new Error(errorData?.detail || `Error ${res.status}`);
+  }
+  return res.json();
+}
+
 export async function obtenerEstadisticas(): Promise<Estadisticas> {
   const res = await fetch(`${API_URL}/api/estadisticas`);
   if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);

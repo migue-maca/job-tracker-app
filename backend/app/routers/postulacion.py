@@ -5,13 +5,14 @@ Define los endpoints REST para la entidad Postulacion.
 Toda la lógica de negocio y acceso a datos se delega en el servicio.
 """
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile, status
 from sqlalchemy.orm import Session
 
 from app.dependencies import get_db
 from app.models.postulacion import Estado, Modalidad, Prioridad
 from app.schemas.postulacion import (
     PostulacionCreate,
+    PostulacionImportar,
     PostulacionResponse,
     PostulacionUpdate,
 )
@@ -21,6 +22,12 @@ router = APIRouter(
     prefix="/api/postulaciones",
     tags=["postulaciones"],
 )
+
+
+@router.get("/exportar", response_model=list[PostulacionResponse])
+def exportar(db: Session = Depends(get_db)):
+    """Devuelve todas las postulaciones para exportar como JSON."""
+    return servicio.listar_postulaciones(db)
 
 
 @router.get("", response_model=list[PostulacionResponse])
@@ -96,3 +103,23 @@ def eliminar(postulacion_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Postulación {postulacion_id} no encontrada",
         )
+
+
+@router.post("/importar", response_model=dict[str, int])
+def importar(
+    datos: list[PostulacionImportar],
+    modo: str = "añadir",
+    db: Session = Depends(get_db),
+):
+    """Importa postulaciones desde un archivo JSON.
+
+    Args:
+        datos: Lista de postulaciones a importar (body JSON).
+        modo: "añadir" (por defecto) o "reemplazar".
+        db: Sesión de base de datos.
+
+    Returns:
+        Dict con el resultado: {'creadas': N, 'duplicadas': M, 'errores': K}
+    """
+    resultado = servicio.importar_postulaciones(db, datos, modo)
+    return resultado

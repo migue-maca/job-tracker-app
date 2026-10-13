@@ -18,6 +18,7 @@ Memoria del proyecto entre sesiones. Máximo ~50 líneas: sintetizar o purgar in
 - CSR con `useEffect`: renderizado en cliente, sin SSR.
 - Fechas: API en ISO `YYYY-MM-DD`, frontend formatea a `DD-MM-YYYY` sin conversiones UTC.
 - PostgreSQL sin puerto expuesto al host: solo red interna Docker.
+- OpenCode MCP: `opencode.json` usa el esquema oficial y declara Chrome DevTools con `command` como array; VS Code requiere confiar el dominio del esquema.
 
 ## Aprendizajes y Errores a Evitar
 - Evitar desfases de fechas locales por serialización automática a UTC.

@@ -31,6 +31,8 @@ export function Filtros({ filtros, onChange }: FiltrosProps) {
   return (
     <div className="filtros">
       <select
+        id="filtro-estado"
+        name="estado"
         value={filtros.estado}
         onChange={(e) => actualizar("estado", e.target.value)}
         className="filtros__select"
@@ -44,6 +46,8 @@ export function Filtros({ filtros, onChange }: FiltrosProps) {
       </select>
 
       <select
+        id="filtro-canal"
+        name="canal"
         value={filtros.canal}
         onChange={(e) => actualizar("canal", e.target.value)}
         className="filtros__select"
@@ -66,6 +70,8 @@ export function Filtros({ filtros, onChange }: FiltrosProps) {
       </select>
 
       <select
+        id="filtro-modalidad"
+        name="modalidad"
         value={filtros.modalidad}
         onChange={(e) => actualizar("modalidad", e.target.value)}
         className="filtros__select"
@@ -79,6 +85,8 @@ export function Filtros({ filtros, onChange }: FiltrosProps) {
       </select>
 
       <select
+        id="filtro-prioridad"
+        name="prioridad"
         value={filtros.prioridad}
         onChange={(e) => actualizar("prioridad", e.target.value)}
         className="filtros__select"

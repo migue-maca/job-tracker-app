@@ -93,9 +93,11 @@ export function FormularioPostulacion({
 
         <form onSubmit={handleSubmit} className="formulario">
           <div className="formulario__grid">
-            <label>
+            <label htmlFor="fecha_postulacion">
               Fecha de postulación *
               <input
+                id="fecha_postulacion"
+                name="fecha_postulacion"
                 type="date"
                 value={form.fecha_postulacion}
                 onChange={(e) => set("fecha_postulacion", e.target.value)}
@@ -103,9 +105,11 @@ export function FormularioPostulacion({
               />
             </label>
 
-            <label>
+            <label htmlFor="empresa">
               Empresa *
               <input
+                id="empresa"
+                name="empresa"
                 type="text"
                 value={form.empresa}
                 onChange={(e) => set("empresa", e.target.value)}
@@ -113,9 +117,11 @@ export function FormularioPostulacion({
               />
             </label>
 
-            <label>
+            <label htmlFor="puesto">
               Puesto *
               <input
+                id="puesto"
+                name="puesto"
                 type="text"
                 value={form.puesto}
                 onChange={(e) => set("puesto", e.target.value)}
@@ -123,9 +129,11 @@ export function FormularioPostulacion({
               />
             </label>
 
-            <label>
+            <label htmlFor="canal_origen">
               Canal de origen *
               <input
+                id="canal_origen"
+                name="canal_origen"
                 type="text"
                 value={form.canal_origen}
                 onChange={(e) => set("canal_origen", e.target.value)}
@@ -133,9 +141,11 @@ export function FormularioPostulacion({
               />
             </label>
 
-            <label>
+            <label htmlFor="modalidad">
               Modalidad *
               <select
+                id="modalidad"
+                name="modalidad"
                 value={form.modalidad}
                 onChange={(e) => set("modalidad", e.target.value as Modalidad)}
                 required
@@ -148,9 +158,11 @@ export function FormularioPostulacion({
               </select>
             </label>
 
-            <label>
+            <label htmlFor="ubicacion">
               Ubicación *
               <input
+                id="ubicacion"
+                name="ubicacion"
                 type="text"
                 value={form.ubicacion}
                 onChange={(e) => set("ubicacion", e.target.value)}
@@ -158,9 +170,11 @@ export function FormularioPostulacion({
               />
             </label>
 
-            <label>
+            <label htmlFor="salario_min">
               Salario mínimo (€)
               <input
+                id="salario_min"
+                name="salario_min"
                 type="number"
                 value={form.salario_min ?? ""}
                 onChange={(e) =>
@@ -169,9 +183,11 @@ export function FormularioPostulacion({
               />
             </label>
 
-            <label>
+            <label htmlFor="salario_max">
               Salario máximo (€)
               <input
+                id="salario_max"
+                name="salario_max"
                 type="number"
                 value={form.salario_max ?? ""}
                 onChange={(e) =>
@@ -180,9 +196,11 @@ export function FormularioPostulacion({
               />
             </label>
 
-            <label>
+            <label htmlFor="estado">
               Estado *
               <select
+                id="estado"
+                name="estado"
                 value={form.estado}
                 onChange={(e) => set("estado", e.target.value as Estado)}
                 required
@@ -195,9 +213,11 @@ export function FormularioPostulacion({
               </select>
             </label>
 
-            <label>
+            <label htmlFor="prioridad">
               Prioridad *
               <select
+                id="prioridad"
+                name="prioridad"
                 value={form.prioridad}
                 onChange={(e) => set("prioridad", e.target.value as Prioridad)}
                 required
@@ -210,9 +230,11 @@ export function FormularioPostulacion({
               </select>
             </label>
 
-            <label>
+            <label htmlFor="tipo_jornada">
               Tipo de jornada *
               <select
+                id="tipo_jornada"
+                name="tipo_jornada"
                 value={form.tipo_jornada}
                 onChange={(e) => set("tipo_jornada", e.target.value as TipoJornada)}
                 required
@@ -225,18 +247,22 @@ export function FormularioPostulacion({
               </select>
             </label>
 
-            <label>
+            <label htmlFor="enlace_oferta">
               Enlace a la oferta
               <input
+                id="enlace_oferta"
+                name="enlace_oferta"
                 type="url"
                 value={form.enlace_oferta ?? ""}
                 onChange={(e) => set("enlace_oferta", e.target.value || null)}
               />
             </label>
 
-            <label>
+            <label htmlFor="tecnologias">
               Tecnologías
               <input
+                id="tecnologias"
+                name="tecnologias"
                 type="text"
                 value={form.tecnologias ?? ""}
                 onChange={(e) => set("tecnologias", e.target.value || null)}
@@ -245,18 +271,22 @@ export function FormularioPostulacion({
             </label>
           </div>
 
-          <label>
+          <label htmlFor="notas_seguimiento">
             Notas de seguimiento
             <textarea
+              id="notas_seguimiento"
+              name="notas_seguimiento"
               value={form.notas_seguimiento ?? ""}
               onChange={(e) => set("notas_seguimiento", e.target.value || null)}
               rows={3}
             />
           </label>
 
-          <label>
+          <label htmlFor="info_entrevistas">
             Info de entrevistas
             <textarea
+              id="info_entrevistas"
+              name="info_entrevistas"
               value={form.info_entrevistas ?? ""}
               onChange={(e) => set("info_entrevistas", e.target.value || null)}
               rows={3}

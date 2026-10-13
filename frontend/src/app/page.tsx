@@ -9,6 +9,12 @@ import { PanelEstadisticas } from "@/components/ui/PanelEstadisticas";
 import { DetallePostulacion } from "@/components/ui/DetallePostulacion";
 import { usePostulaciones } from "@/features/postulaciones/hooks";
 import { Postulacion, Orden } from "@/features/postulaciones/tipos";
+import { exportarJSON, importarJSON } from "@/features/postulaciones/api";
+
+interface ModalImportarState {
+  abierto: boolean;
+  modo: "añadir" | "reemplazar";
+}
 
 export default function Home() {
   const { postulaciones, cargando, error, recargar } = usePostulaciones();
@@ -24,6 +30,10 @@ export default function Home() {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [postulacionEditando, setPostulacionEditando] = useState<Postulacion | null>(null);
   const [postulacionDetalle, setPostulacionDetalle] = useState<Postulacion | null>(null);
+  const [modalImportar, setModalImportar] = useState<ModalImportarState>({
+    abierto: false,
+    modo: "añadir",
+  });
 
   // Filtrado en cliente (los datos ya vienen del backend)
   const filtradas = postulaciones.filter((p) => {
@@ -64,19 +74,78 @@ export default function Home() {
     setStatsTick((t) => t + 1);
   };
 
+  const handleExportar = () => {
+    exportarJSON().then((blob) => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      const fecha = new Date().toLocaleDateString("es-ES").replace(/\//g, "-");
+      a.download = `postulaciones-${fecha}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  };
+
+  const handleImportar = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const input = e.currentTarget.querySelector('input[type="file"]') as HTMLInputElement;
+    const archivo = input?.files?.[0];
+
+    if (!archivo) {
+      alert("Por favor, selecciona un fichero.");
+      return;
+    }
+
+    if (!archivo.name.endsWith(".json")) {
+      alert("El fichero debe tener extensión .json.");
+      return;
+    }
+
+    setModalImportar({ abierto: false, modo: modalImportar.modo });
+
+    try {
+      const resultado = await importarJSON(archivo, modalImportar.modo);
+      let mensaje = `Importación completada: ${resultado.creadas} creadas`;
+      if (resultado.duplicadas > 0) {
+        mensaje += `, ${resultado.duplicadas} duplicadas omitidas`;
+      }
+      if (resultado.errores > 0) {
+        mensaje += `, ${resultado.errores} errores`;
+      }
+      alert(mensaje);
+      recargar();
+      setStatsTick((t) => t + 1);
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Error desconocido");
+    }
+  };
+
   return (
     <main className="contenedor">
       <header className="cabecera">
         <h1>Gestor de Postulaciones</h1>
-        <button
-          className="btn btn-primario"
-          onClick={() => {
-            setPostulacionEditando(null);
-            setMostrarFormulario(true);
-          }}
-        >
-          + Nueva postulación
-        </button>
+        <div className="cabecera-derecha">
+          <button
+            className="btn btn-primario"
+            onClick={() => {
+              setPostulacionEditando(null);
+              setMostrarFormulario(true);
+            }}
+          >
+            + Nueva postulación
+          </button>
+          <button
+            className="btn btn-secundario"
+            onClick={() => setModalImportar({ abierto: true, modo: "añadir" })}
+          >
+            Importar
+          </button>
+          <button className="btn btn-secundario" onClick={handleExportar}>
+            Exportar
+          </button>
+        </div>
       </header>
 
       <Buscador valor={busqueda} onChange={setBusqueda} />
@@ -113,6 +182,44 @@ export default function Home() {
             setPostulacionEditando(null);
           }}
         />
+      )}
+
+      {modalImportar.abierto && (
+        <div className="modal-overlay" onClick={() => setModalImportar({ abierto: false, modo: modalImportar.modo })}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h2>Importar postulaciones</h2>
+            <p>Selecciona un fichero JSON con las postulaciones a importar.</p>
+            <p>
+              Modo:{" "}
+              <strong>
+                {modalImportar.modo === "añadir" ? "Añadir a existentes" : "Reemplazar todo"}
+              </strong>
+            </p>
+            <form onSubmit={handleImportar}>
+              <label htmlFor="archivo-importar" className="btn btn-secundario">
+                Seleccionar fichero JSON
+              </label>
+              <input
+                id="archivo-importar"
+                type="file"
+                accept=".json"
+                style={{ display: "none" }}
+              />
+              <div className="formulario__acciones">
+                <button type="submit" className="btn btn-primario">
+                  Importar
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secundario"
+                  onClick={() => setModalImportar({ abierto: false, modo: modalImportar.modo })}
+                >
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       )}
 
       {postulacionDetalle && (

@@ -119,3 +119,22 @@ def delete(db: Session, postulacion_id: str) -> bool:
     db.delete(existente)
     db.commit()
     return True
+
+
+def bulk_create(db: Session, lista: list[PostulacionCreate]) -> list[Postulacion]:
+    """
+    Crea múltiples postulaciones en una sola operación.
+
+    Args:
+        db: Sesión de base de datos.
+        lista: Lista de objetos PostulacionCreate a crear.
+
+    Returns:
+        Lista de postulaciones creadas.
+    """
+    nuevas = [Postulacion(**data.model_dump()) for data in lista]
+    db.add_all(nuevas)
+    db.commit()
+    for nueva in nuevas:
+        db.refresh(nueva)
+    return nuevas

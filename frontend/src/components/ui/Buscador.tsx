@@ -13,6 +13,8 @@ export function Buscador({ valor, onChange }: BuscadorProps) {
   return (
     <div className="buscador">
       <input
+        id="buscador"
+        name="buscador"
         type="text"
         placeholder="Buscar por empresa, puesto o tecnología..."
         value={valor}

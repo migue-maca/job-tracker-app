@@ -42,3 +42,7 @@ Cuando diseñes o modifiques interfaces web, estilos o componentes orientados al
 
 Cuando se vaya a abordar cualquier tarea que tenga cierta relevancia, utiliza la siguiente skill para definir lo mejor posible antes de construir:
 - `.agents/skills/grill-me/SKILL.md`
+
+## Tests
+
+- No hay tests automáticos. Después de cada cambio, verifica con el MCP de Chrome DevTools: abre la app web, prueba la funcionalidad entera con todos los casos de uso que deben contemplarse, revisa la consola y comprueba la vista móvil. Presenta al final un informe de los errores o problemas identificados y cómo resolverlos.

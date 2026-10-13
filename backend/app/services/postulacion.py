@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 from app.models.postulacion import Estado, Modalidad, Postulacion, Prioridad
 from app.repositories import postulacion as repo
-from app.schemas.postulacion import PostulacionCreate, PostulacionUpdate
+from app.schemas.postulacion import PostulacionCreate, PostulacionImportar, PostulacionUpdate
 
 
 def listar_postulaciones(
@@ -83,3 +83,68 @@ def actualizar_postulacion(
 def eliminar_postulacion(db: Session, postulacion_id: str) -> bool:
     """Elimina una postulación por ID."""
     return repo.delete(db, postulacion_id)
+
+
+def importar_postulaciones(
+    db: Session,
+    lista: list[PostulacionImportar],
+    modo: str = "añadir",
+) -> dict[str, int]:
+    """
+    Importa múltiples postulaciones desde JSON.
+
+    Modos:
+    - "añadir": Añade a las existentes, preguntando por duplicados.
+    - "reemplazar": Elimina todas y carga las nuevas (con confirmación).
+
+    Returns:
+        Dict con {'creadas': N, 'duplicadas': M, 'errores': K}
+    """
+    from fastapi import HTTPException
+
+    resultado = {"creadas": 0, "duplicadas": 0, "errores": 0}
+    existentes = repo.get_all(db)
+
+    # Obtener claves únicas para detectar duplicados
+    claves_existentes = {
+        (
+            p.empresa.lower().strip(),
+            p.puesto.lower().strip(),
+            str(p.fecha_postulacion),
+        )
+        for p in existentes
+    }
+
+    # Verificar duplicados
+    duplicados: list[tuple[int, str]] = []
+    for i, data in enumerate(lista):
+        clave = (
+            data.empresa.lower().strip(),
+            data.puesto.lower().strip(),
+            str(data.fecha_postulacion),
+        )
+        if clave in claves_existentes and modo == "añadir":
+            duplicados.append((i, f"{data.empresa} - {data.puesto}"))
+            resultado["duplicadas"] += 1
+
+    if modo == "reemplazar":
+        # Eliminar todas las postulaciones existentes
+        for p in existentes:
+            repo.delete(db, p.id)
+        resultado["creadas"] = len(lista)
+        # Crear todas las nuevas
+        nuevas = repo.bulk_create(db, [PostulacionCreate(**d.model_dump()) for d in lista])
+        resultado["creadas"] = len(nuevas)
+        return resultado
+
+    # Modo "añadir": crear solo las no duplicadas
+    datos_no_duplicados = [
+        data for i, data in enumerate(lista) if not any(d[0] == i for d in duplicados)
+    ]
+
+    if datos_no_duplicados:
+        nuevas = repo.bulk_create(db, [PostulacionCreate(**d.model_dump()) for d in datos_no_duplicados])
+        resultado["creadas"] = len(nuevas)
+
+    resultado["duplicadas"] = len(duplicados)
+    return resultado
